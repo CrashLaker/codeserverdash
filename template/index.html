@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    i {
+        cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+
+<div class="container">
+    <div class="input-field col s6">
+      <input id="create" type="text">
+      <label for="create">Create</label>
+    </div>
+
+    <script>
+    document.querySelector("input").addEventListener("keyup", function (e){
+        if (e.key == "Enter"){
+            if (this.value != ""){
+                window.location.href = "{{ url }}/create/"+this.value
+            }
+        }
+    })
+    function goTo(action, value){
+        if (action == 'delete'){
+            let c = confirm('Are you sure?')
+            if (!c)
+                return
+        }
+        window.location.href = `{{ url }}/${action}/${value}`
+    }
+
+    </script>
+
+
+
+    <table class="responsive-table striped">
+        <thead>
+            <td style="text-align:center;">Status</td>
+            <td>Name</td>
+            <td>Dev</td>
+            <td>Live</td>
+            <td>Back</td>
+            <td>Actions</td>
+        </thead>
+    {% for c in containers %}
+        <tr> 
+            <td style="text-align:center;">
+                {% autoescape off %}
+                {{ c["status_html"] }}
+                {% endautoescape %}
+            </td>
+            <td>{{ c["name"] }}</td>
+            <td><a target="_blank" href="{{ url }}:{{ c["dp"] }}">{{ c["dp"] }}</a></td>
+            <td><a target="_blank" href="{{ url }}:{{ c["lp"] }}">{{ c["lp"] }}</a></td>
+            <td><a target="_blank" href="{{ url }}:{{ c["bp"] }}">{{ c["bp"] }}</a></td>
+            <td>
+                <i onclick="goTo('start', '{{ c["cname"] }}')" class="material-icons">play_arrow</i>
+                <i onclick="goTo('stop', '{{ c["cname"] }}')" class="material-icons">stop</i>
+                <i onclick="goTo('restart', '{{ c["cname"] }}')" class="material-icons">loop</i>
+                <i onclick="goTo('reset', '{{ c["cname"] }}')" class="material-icons">flip_to_front</i>
+                <i onclick="goTo('delete', '{{ c["cname"] }}')" class="material-icons">delete_forever</i>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <!--JavaScript at end of body for optimized loading-->
+</body>
+</html>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
